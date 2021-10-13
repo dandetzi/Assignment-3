@@ -1,0 +1,195 @@
+
+R version 4.1.0 (2021-05-18) -- "Camp Pontanezen"
+Copyright (C) 2021 The R Foundation for Statistical Computing
+Platform: x86_64-pc-linux-gnu (64-bit)
+
+R is free software and comes with ABSOLUTELY NO WARRANTY.
+You are welcome to redistribute it under certain conditions.
+Type 'license()' or 'licence()' for distribution details.
+
+  Natural language support but running in an English locale
+
+R is a collaborative project with many contributors.
+Type 'contributors()' for more information and
+'citation()' on how to cite R or R packages in publications.
+
+Type 'demo()' for some demos, 'help()' for on-line help, or
+'help.start()' for an HTML browser interface to help.
+Type 'q()' to quit R.
+
+[Previously saved workspace restored]
+
+> install.packages("dplyr")
+Installing package into ‘/home/u4/dwdetzi/R/library’
+(as ‘lib’ is unspecified)
+trying URL 'https://cloud.r-project.org/src/contrib/dplyr_1.0.7.tar.gz'
+Content type 'application/x-gzip' length 852103 bytes (832 KB)
+==================================================
+downloaded 832 KB
+
+* installing *source* package ‘dplyr’ ...
+** package ‘dplyr’ successfully unpacked and MD5 sums checked
+** using staged installation
+** libs
+g++ -std=gnu++14 -I"/opt/ohpc/pub/apps/R/4.1.0/lib64/R/include" -DNDEBUG   -I/opt/ohpc/pub/apps/python/3.6.5/include/python3.6m   -fpic  -g -O2  -c chop.cpp -o chop.o
+g++ -std=gnu++14 -I"/opt/ohpc/pub/apps/R/4.1.0/lib64/R/include" -DNDEBUG   -I/opt/ohpc/pub/apps/python/3.6.5/include/python3.6m   -fpic  -g -O2  -c filter.cpp -o filter.o
+g++ -std=gnu++14 -I"/opt/ohpc/pub/apps/R/4.1.0/lib64/R/include" -DNDEBUG   -I/opt/ohpc/pub/apps/python/3.6.5/include/python3.6m   -fpic  -g -O2  -c funs.cpp -o funs.o
+g++ -std=gnu++14 -I"/opt/ohpc/pub/apps/R/4.1.0/lib64/R/include" -DNDEBUG   -I/opt/ohpc/pub/apps/python/3.6.5/include/python3.6m   -fpic  -g -O2  -c group_by.cpp -o group_by.o
+g++ -std=gnu++14 -I"/opt/ohpc/pub/apps/R/4.1.0/lib64/R/include" -DNDEBUG   -I/opt/ohpc/pub/apps/python/3.6.5/include/python3.6m   -fpic  -g -O2  -c group_data.cpp -o group_data.o
+g++ -std=gnu++14 -I"/opt/ohpc/pub/apps/R/4.1.0/lib64/R/include" -DNDEBUG   -I/opt/ohpc/pub/apps/python/3.6.5/include/python3.6m   -fpic  -g -O2  -c imports.cpp -o imports.o
+g++ -std=gnu++14 -I"/opt/ohpc/pub/apps/R/4.1.0/lib64/R/include" -DNDEBUG   -I/opt/ohpc/pub/apps/python/3.6.5/include/python3.6m   -fpic  -g -O2  -c init.cpp -o init.o
+g++ -std=gnu++14 -I"/opt/ohpc/pub/apps/R/4.1.0/lib64/R/include" -DNDEBUG   -I/opt/ohpc/pub/apps/python/3.6.5/include/python3.6m   -fpic  -g -O2  -c mask.cpp -o mask.o
+g++ -std=gnu++14 -I"/opt/ohpc/pub/apps/R/4.1.0/lib64/R/include" -DNDEBUG   -I/opt/ohpc/pub/apps/python/3.6.5/include/python3.6m   -fpic  -g -O2  -c mutate.cpp -o mutate.o
+g++ -std=gnu++14 -I"/opt/ohpc/pub/apps/R/4.1.0/lib64/R/include" -DNDEBUG   -I/opt/ohpc/pub/apps/python/3.6.5/include/python3.6m   -fpic  -g -O2  -c slice.cpp -o slice.o
+g++ -std=gnu++14 -I"/opt/ohpc/pub/apps/R/4.1.0/lib64/R/include" -DNDEBUG   -I/opt/ohpc/pub/apps/python/3.6.5/include/python3.6m   -fpic  -g -O2  -c summarise.cpp -o summarise.o
+g++ -std=gnu++14 -shared -L/opt/ohpc/pub/apps/R/4.1.0/lib64/R/lib -L/opt/ohpc/pub/apps/python/3.6.5/lib -o dplyr.so chop.o filter.o funs.o group_by.o group_data.o imports.o init.o mask.o mutate.o slice.o summarise.o -L/opt/ohpc/pub/apps/R/4.1.0/lib64/R/lib -lR
+installing to /home/u4/dwdetzi/R/library/00LOCK-dplyr/00new/dplyr/libs
+** R
+** data
+*** moving datasets to lazyload DB
+** inst
+** byte-compile and prepare package for lazy loading
+** help
+*** installing help indices
+*** copying figures
+** building package indices
+** installing vignettes
+** testing if installed package can be loaded from temporary location
+** checking absolute paths in shared objects and dynamic libraries
+** testing if installed package can be loaded from final location
+** testing if installed package keeps a record of temporary installation path
+* DONE (dplyr)
+
+The downloaded source packages are in
+	‘/tmp/RtmpjBznyg/downloaded_packages’
+> library("dplyr")
+
+Attaching package: ‘dplyr’
+
+The following objects are masked from ‘package:stats’:
+
+    filter, lag
+
+The following objects are masked from ‘package:base’:
+
+    intersect, setdiff, setequal, union
+
+> 
+> cluster <- function(ID1, ID2) {x <- data.frame(ID1, ID2) 
++ mini <- apply(x,1,min)
++ maxi <- apply(x,1,max)
++ x2 <- unique(data.frame(mini,maxi))
++ x3 <- unique(data.frame(maxi,mini))
++ names(x3) <- c("mini","maxi")
++ x4 <- rbind(x2,x3)
++ names(x4) <- c("ID1","ID2")
++ x5 <- x4
++ names(x5) <- c("ID1","ID3")
++ x6 <- inner_join(x4,x5,by = "ID1")
++ x7 <- x6[x6$ID2 != x6$ID3,]
++ x8 <- x4
++ names(x8) <- c("ID2","ID3")
++ x8$mer <- 1
++ x9 <- left_join(x7, x8, by = c("ID2","ID3"))
++ x9[is.na(x9$mer),"mer"] = 0
++ x10 <- tapply(x9$mer,x9$ID1,sum)
++ x11 <- tapply(x9$mer,x9$ID1,length)
++ x12 <- data.frame(x10/2,x11/2)
++ names(x12) <- c("exists","possible")
++ x12$cluster <- x12$exist/x12$possibl
++ print(x12$cluster)
++ }
+> 
+> load("network.RData")
+> 
+> cluster_g <- cluster(g$ID1, g$ID2)
+  [1] 0.39393939 0.24444444 0.55555556 0.39393939 0.53571429 0.29487179
+  [7] 0.37777778 0.40000000 0.30555556 0.13888889 0.20000000 0.25000000
+ [13] 0.16666667 0.23636364 0.25000000 0.35555556 0.32727273 0.25454545
+ [19] 0.44444444 0.33333333 0.55555556 0.39285714 0.42222222 0.33333333
+ [25] 0.60714286 0.29090909 0.27272727 0.35555556 0.33333333 0.20000000
+ [31] 0.28571429 0.25454545 0.38095238 0.35555556 0.40000000 0.30909091
+ [37] 0.10989011 0.23809524 0.27777778 0.24242424 0.16666667 0.25000000
+ [43] 0.50000000 0.28888889 0.41666667 0.50000000 0.28571429 0.37878788
+ [49] 0.61904762 0.25454545 0.26666667 0.37777778 0.38888889 0.42857143
+ [55] 0.48888889 0.27272727 0.41818182 0.35714286 0.26666667 0.35555556
+ [61] 0.13333333 0.30555556 0.26666667 0.32727273 0.36111111 0.25757576
+ [67] 0.55555556 0.42222222 0.48888889 0.57142857 0.39393939 0.36363636
+ [73] 0.21794872 0.33333333 0.28888889 0.60714286 0.34848485 0.26666667
+ [79] 0.35555556 0.55555556 0.41666667 0.23636364 0.55555556 0.46666667
+ [85] 0.35555556 0.25454545 0.21818182 0.21818182 0.27272727 0.50000000
+ [91] 0.53571429 0.35555556 0.58333333 0.58333333 0.21794872 0.37777778
+ [97] 0.25757576 0.28571429 0.34545455 0.36363636 0.25454545 0.29090909
+[103] 0.31111111 0.21212121 0.46428571 0.25000000 0.26666667 0.19444444
+[109] 0.13636364 0.30909091 0.35555556 0.30909091 0.35714286 0.19444444
+[115] 0.34545455 0.35555556 0.30303030 0.42222222 0.50000000 0.63888889
+[121] 0.31111111 0.37777778 0.28888889 0.27272727 0.21818182 0.24444444
+[127] 0.28888889 0.61111111 0.64285714 0.38181818 0.38181818 0.49090909
+[133] 0.57777778 0.27272727 0.40000000 0.38888889 0.35714286 0.42857143
+[139] 0.22222222 0.33333333 0.31111111 0.34545455 0.38095238 0.18181818
+[145] 0.25000000 0.35555556 0.33333333 0.47222222 0.60000000 0.25757576
+[151] 0.52777778 0.16666667 0.37777778 0.14285714 0.27272727 0.42222222
+[157] 0.22222222 0.28888889 0.31111111 0.39285714 0.15151515 0.57142857
+[163] 0.28888889 0.25454545 0.24444444 0.39285714 0.44444444 0.30555556
+[169] 0.20000000 0.30909091 0.28787879 0.47222222 0.50000000 0.42222222
+[175] 0.47222222 0.22727273 0.10606061 0.33333333 0.41666667 0.41666667
+[181] 0.18181818 0.47222222 0.22222222 0.30555556 0.38888889 0.36363636
+[187] 0.16666667 0.35555556 0.38181818 0.52777778 0.22222222 0.14285714
+[193] 0.32727273 0.31111111 0.38888889 0.19047619 0.23809524 0.33333333
+[199] 0.60000000 0.37777778 0.22727273 0.42857143 0.42222222 0.38888889
+[205] 0.36363636 0.46666667 0.61111111 0.30303030 0.37777778 0.31818182
+[211] 0.58333333 0.36363636 0.42857143 0.38888889 0.47272727 0.48888889
+[217] 0.66666667 0.47272727 0.53333333 0.33333333 0.38888889 0.33333333
+[223] 0.27777778 0.25454545 0.33333333 0.16363636 0.83333333 0.29090909
+[229] 0.21818182 0.34545455 0.38888889 0.35555556 0.36363636 0.22222222
+[235] 0.35555556 0.25454545 0.53571429 0.35555556 0.42222222 0.47222222
+[241] 0.46666667 0.47272727 0.34545455 0.35897436 0.40000000 0.47272727
+[247] 0.38181818 0.30909091 0.40000000 0.36363636 0.61111111 0.48888889
+[253] 0.40909091 0.36363636 0.49090909 0.51111111 0.47272727 0.21794872
+[259] 0.22222222 0.42222222 0.23636364 0.35555556 0.40000000 0.36111111
+[265] 0.27272727 0.24242424 0.28571429 0.30555556 0.10909091 0.25000000
+[271] 0.19047619 0.36111111 0.36363636 0.46428571 0.52777778 0.44444444
+[277] 0.60000000 0.51111111 0.25757576 0.58333333 0.60000000 0.43636364
+[283] 0.55555556 0.44444444 0.36111111 0.53333333 0.20000000 0.37777778
+[289] 0.26666667 0.32142857 0.21818182 0.21818182 0.22222222 0.11111111
+[295] 0.22222222 0.26666667 0.19780220 0.40000000 0.36111111 0.25000000
+[301] 0.32142857 0.36111111 0.36363636 0.20000000 0.29090909 0.53333333
+[307] 0.37777778 0.39393939 0.57777778 0.34545455 0.60000000 0.29090909
+[313] 0.34545455 0.31818182 0.36363636 0.25757576 0.41666667 0.18181818
+[319] 0.52380952 0.28888889 0.38888889 0.41818182 0.37878788 0.41818182
+[325] 0.40000000 0.47272727 0.42857143 0.23076923 0.44444444 0.24444444
+[331] 0.36363636 0.24444444 0.33333333 0.26666667 0.36111111 0.26666667
+[337] 0.25641026 0.30303030 0.41666667 0.40000000 0.30303030 0.41818182
+[343] 0.62222222 0.40000000 0.35897436 0.38181818 0.41818182 0.52777778
+[349] 0.34545455 0.42222222 0.25000000 0.29090909 0.40000000 0.57777778
+[355] 0.57777778 0.46428571 0.40000000 0.47272727 0.37878788 0.26923077
+[361] 0.35555556 0.23636364 0.31111111 0.35714286 0.16666667 0.25454545
+[367] 0.38181818 0.55555556 0.48888889 0.58333333 0.49090909 0.40000000
+[373] 0.33333333 0.37777778 0.34545455 0.43636364 0.35555556 0.22222222
+[379] 0.20512821 0.35555556 0.29090909 0.33333333 0.35555556 0.28888889
+[385] 0.32727273 0.18181818 0.28888889 0.34545455 0.26666667 0.26666667
+[391] 0.42857143 0.25000000 0.34545455 0.50000000 0.38181818 0.32727273
+[397] 0.45454545 0.35714286 0.36363636 0.34545455 0.21818182 0.50000000
+[403] 0.60714286 0.48888889 0.34848485 0.51111111 0.50909091 0.43636364
+[409] 0.27472527 0.43636364 0.25454545 0.31111111 0.42857143 0.23809524
+[415] 0.44444444 0.22222222 0.27777778 0.15151515 0.13333333 0.29090909
+[421] 0.18181818 0.16666667 0.13333333 0.22222222 0.26666667 0.12121212
+[427] 0.25000000 0.32142857 0.27777778 0.21428571 0.16363636 0.13333333
+[433] 0.11111111 0.06666667 0.13888889 0.36111111 0.30555556 0.23636364
+[439] 0.29090909 0.36111111 0.30909091 0.38888889 0.28571429 0.13636364
+[445] 0.22222222 0.14285714 0.11111111 0.20000000 0.25000000 0.37777778
+[451] 0.36363636 0.61111111 0.22727273 0.47272727 0.49090909 0.53571429
+[457] 0.51111111 0.46666667 0.60000000 0.40000000 0.55555556 0.49090909
+[463] 0.47222222 0.61111111 0.50000000 0.46666667 0.31111111 0.04444444
+[469] 0.44444444 0.50000000 0.50000000 0.17948718 0.11111111 0.07142857
+[475] 0.25454545 0.24242424 0.41666667 0.57142857 0.32727273 0.25641026
+[481] 0.13888889 0.41666667 0.26666667 0.41666667 0.42857143 0.20000000
+[487] 0.26666667 0.39285714 0.38888889 0.42857143 0.45454545 0.18181818
+[493] 0.48888889 0.37777778 0.53333333 0.37777778 0.27272727 0.44444444
+[499] 0.38181818 0.40000000
+> 
+> save.image("cluster.RData")
+> 
+> proc.time()
+   user  system elapsed 
+  8.580   0.750  14.326 
